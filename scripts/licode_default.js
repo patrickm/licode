@@ -55,6 +55,7 @@ config.erizoController.hostname = ''; //default value: ''
 config.erizoController.port = 8080; //default value: 8080
 // Use true if clients communicate with erizoController over SSL
 config.erizoController.ssl = false; //default value: false
+config.erizoController.keystorePath = '../../cert/cert.pfx';
 
 // This configuration is used by erizoController server to listen for connections
 // Use true if erizoController listens in HTTPS. SSL certificates located in /cert
