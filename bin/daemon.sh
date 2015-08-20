@@ -175,6 +175,7 @@ case $startStop in
 
     if [ "${command}" == "agent" ]; then
       kill $(ps aux | grep 'node' |grep 'erizoJS/erizoJS.js' | awk '{print $2}') 2>/dev/null
+      echo > /dev/null
     fi
     ;;
 
