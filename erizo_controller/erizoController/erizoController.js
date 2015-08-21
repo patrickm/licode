@@ -170,6 +170,22 @@ var sendMsgToRoom = function (room, type, arg) {
     }
 };
 
+var getUsersOfRoom = function (room) {
+  var users = [];
+  sockets = room.sockets;
+
+  for (id in sockets) {
+      if (sockets.hasOwnProperty(id)) {
+          var conn = io.sockets.connected[sockets[id]];
+          if (conn && conn.user) {
+            users.push(conn.user);
+          }
+      }
+  }
+  
+  return users;
+};
+
 var privateRegexp;
 var publicIP;
 
@@ -372,7 +388,7 @@ var listen = function () {
                         } else {
                             rooms[tokenDB.room].sockets.push(socket.id);
                         }
-                        user = {name: tokenDB.userName, role: tokenDB.role};
+                        user = {name: tokenDB.userName, role: tokenDB.role, id: socket.id};
                         socket.user = user;
                         var permissions = GLOBAL.config.erizoController.roles[tokenDB.role] || [];
                         socket.user.permissions = {};
@@ -400,12 +416,16 @@ var listen = function () {
 
                         callback('success', {streams: streamList,
                                             id: socket.room.id,
+                                            users: getUsersOfRoom(socket.room),
                                             p2p: socket.room.p2p,
                                             defaultVideoBW: GLOBAL.config.erizoController.defaultVideoBW,
                                             maxVideoBW: GLOBAL.config.erizoController.maxVideoBW,
                                             iceServers: GLOBAL.config.erizoController.iceServers
                                             });
-
+                        
+                        if (socket.room !== undefined && !socket.room.p2p) {
+                          sendMsgToRoom(socket.room, 'onUserJoin', {user: user});
+                        }
                     } else {
                         log.warn('Token does not contain this host: Invalid host');
                         callback('error', 'Invalid host');
@@ -799,6 +819,14 @@ var listen = function () {
             if (socket.room !== undefined && !socket.room.p2p && GLOBAL.config.erizoController.report.session_events) {
                 var timeStamp = new Date();
                 amqper.broadcast('event', {room: socket.room.id, user: socket.id, type: 'user_disconnection', timestamp: timeStamp.getTime()});
+            }
+
+            if (socket.room !== undefined && !socket.room.p2p) {
+                for (i in socket.streams) {
+                    if (socket.streams.hasOwnProperty(i)) {
+                        sendMsgToRoom(socket.room, 'onUserLeave', {user: socket.user});
+                    }
+                }
             }
 
             if (socket.room !== undefined && socket.room.sockets.length === 0) {
