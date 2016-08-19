@@ -12,7 +12,8 @@ function printText(text) {
   document.getElementById('messages').value += '- ' + text + '\n';
 }
 
-window.onload = function () {
+window.startVC = function () {
+	window.getVCUIConfig();
   var config = {audio: true, video: true, data: true, videoSize: [640, 480, 640, 480]};
   localStream = Erizo.Stream(config);
   var createToken = function(userName, role, callback) {

@@ -26,8 +26,9 @@ function startRecording () {
   }
 }
 
-window.onload = function () {
-  recording = false;
+  window.startVC = function () {
+	window.getVCUIConfig();
+recording = false;
   var screen = getParameterByName("screen");
   var roomName = getParameterByName("room") || "basicExampleRoom";
   console.log("Selected Room", room);

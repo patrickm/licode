@@ -2,14 +2,33 @@
   <head>
     <title>Licode Basic Example</title>
     <script type="text/javascript" src="socket.io.js"></script>
-    <script type="text/javascript" src="erizo.js"></script>
+    <script type="text/javascript" src="erizo-debug.js"></script>
+    <script type="text/javascript" src="additions.js"></script>
     <script type="text/javascript" src="connection_test.js"></script>
   </head>
 
   <body>
     <div>
       <p>This page tests your connectivity to Licode server</p>
-      <textarea id="messages" rows="15" cols="100"></textarea>
+
+		<div id="vc-form" style="display: none">
+			<p>
+				<label>Block: </label>
+				<label><input type="checkbox" name="input-block-host" value="1" id="input-block-host"> Host</label>
+				<label><input type="checkbox" name="input-block-stun" value="1" id="input-block-stun"> Stun</label>
+				<label><input type="checkbox" name="input-block-relay" value="1" id="input-block-relay"> Relay</label>
+			</p>
+			<p>
+				<label>Ice servers: </label>
+				<label><input type="checkbox" name="input-force-relay" value="1" id="input-force-relay"> Force ice relay</label>
+				<label><input type="checkbox" name="input-ice-auto" value="1" id="input-ice-auto" checked> Auto Ice Servers</label>
+				<div id="div-ice-servers"></div>
+			</p>
+			
+			<p><button id="startButton">Start</button></p>
+		</div>
+
+      <textarea id="messages" rows="7" cols="100"></textarea>
     </div>
     <div>
       <p>Local video (got from your local camera)</p>
