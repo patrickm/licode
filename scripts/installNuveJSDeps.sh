@@ -9,4 +9,5 @@ EXTRAS=$ROOT/extras
 
 cp $ROOT/erizo_controller/erizoClient/dist/socket.io.js $EXTRAS/basic_example/public/
 cp $ROOT/erizo_controller/erizoClient/dist/erizo.js $EXTRAS/basic_example/public/
+cp $ROOT/erizo_controller/erizoClient/dist/erizo-debug.js $EXTRAS/basic_example/public/
 cp $ROOT/nuve/nuveClient/dist/nuve.js $EXTRAS/basic_example/
